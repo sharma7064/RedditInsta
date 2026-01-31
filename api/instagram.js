@@ -46,41 +46,85 @@ export default async function handler(req, res) {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`API responded with status: ${response.status}`);
-    }
-
     const data = await response.json();
+
+    if (!response.ok) {
+      console.error('API Error Response:', JSON.stringify(data));
+      return res.status(response.status).json({
+        error: 'Instagram API error',
+        details: data.message || data.error || `Status: ${response.status}`
+      });
+    }
 
     // Transform the data to our format
     const posts = transformInstagramData(data, country);
 
+    if (posts.length === 0) {
+      return res.status(200).json({
+        posts: [],
+        debug: 'No posts found in API response',
+        rawKeys: Object.keys(data || {})
+      });
+    }
+
     return res.status(200).json({ posts });
   } catch (error) {
-    console.error('Instagram API error:', error);
-    return res.status(500).json({ error: 'Failed to fetch Instagram posts' });
+    console.error('Instagram API error:', error.message);
+    return res.status(500).json({
+      error: 'Failed to fetch Instagram posts',
+      details: error.message
+    });
   }
 }
 
 function transformInstagramData(data, country) {
   try {
-    // Handle different API response structures
-    const items = data.data?.items || data.items || data.edge_hashtag_to_media?.edges || [];
+    // Handle the instagram-scraper-api2 response structure
+    const items = data.data?.items ||
+                  data.items ||
+                  data.data?.edges?.map(e => e.node) ||
+                  data.edge_hashtag_to_media?.edges?.map(e => e.node) ||
+                  [];
 
     return items.slice(0, 9).map((item, index) => {
       // Handle different data structures from the API
       const node = item.node || item;
 
+      // Get image URL from various possible locations
+      const image = node.display_url ||
+                    node.thumbnail_url ||
+                    node.image_versions2?.candidates?.[0]?.url ||
+                    node.thumbnail_src ||
+                    node.display_resources?.[0]?.src ||
+                    '';
+
+      // Get caption from various possible locations
+      const caption = node.edge_media_to_caption?.edges?.[0]?.node?.text ||
+                      node.caption?.text ||
+                      node.caption ||
+                      'Travel moment';
+
+      // Get username
+      const username = node.owner?.username ||
+                       node.user?.username ||
+                       'traveler';
+
+      // Get likes
+      const likes = node.edge_liked_by?.count ||
+                    node.like_count ||
+                    node.likes?.count ||
+                    Math.floor(Math.random() * 5000) + 500;
+
       return {
-        id: node.id || index,
+        id: node.id || node.pk || index,
         country: country,
-        image: node.display_url || node.thumbnail_url || node.image_versions2?.candidates?.[0]?.url || '',
-        caption: node.edge_media_to_caption?.edges?.[0]?.node?.text || node.caption?.text || 'Travel moment',
-        username: node.owner?.username || node.user?.username || 'traveler',
-        likes: node.edge_liked_by?.count || node.like_count || Math.floor(Math.random() * 5000) + 500,
+        image: image,
+        caption: typeof caption === 'string' ? caption.slice(0, 200) : 'Travel moment',
+        username: username,
+        likes: likes,
         date: getRelativeTime(node.taken_at_timestamp || node.taken_at)
       };
-    });
+    }).filter(post => post.image); // Only return posts with images
   } catch (error) {
     console.error('Error transforming data:', error);
     return [];
