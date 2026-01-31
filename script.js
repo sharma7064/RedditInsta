@@ -1,6 +1,7 @@
 // Travel Itinerary Generator - Main Script
 
 let postsData = null;
+let useRealApi = true; // Try real API first, fallback to mock data
 
 // Country flag mapping
 const countryFlags = {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupCountrySelector();
 });
 
-// Load posts data from JSON file
+// Load posts data from JSON file (fallback data)
 async function loadPostsData() {
     try {
         const response = await fetch('data/posts.json');
@@ -28,15 +29,32 @@ async function loadPostsData() {
     }
 }
 
+// Fetch Instagram posts from API
+async function fetchInstagramPosts(country) {
+    try {
+        const response = await fetch(`/api/instagram?country=${encodeURIComponent(country)}`);
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        return data.posts || [];
+    } catch (error) {
+        console.error('Error fetching Instagram posts:', error);
+        return null; // Return null to trigger fallback
+    }
+}
+
 // Setup country selector event listener
 function setupCountrySelector() {
     const selector = document.getElementById('country-select');
 
-    selector.addEventListener('change', (e) => {
+    selector.addEventListener('change', async (e) => {
         const country = e.target.value;
 
         if (country) {
-            displayPosts(country);
+            await displayPosts(country);
         } else {
             hidePosts();
         }
@@ -44,7 +62,7 @@ function setupCountrySelector() {
 }
 
 // Display posts for selected country
-function displayPosts(country) {
+async function displayPosts(country) {
     const postsContainer = document.getElementById('posts-container');
     const emptyState = document.getElementById('empty-state');
     const instagramGrid = document.getElementById('instagram-grid');
@@ -54,8 +72,25 @@ function displayPosts(country) {
     postsContainer.classList.remove('hidden');
     emptyState.classList.add('hidden');
 
-    // Filter posts by country
-    const instagramPosts = postsData.instagram.filter(post => post.country === country);
+    // Show loading state for Instagram
+    instagramGrid.innerHTML = createLoadingState();
+
+    // Smooth scroll to posts
+    postsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Try to fetch real Instagram posts
+    let instagramPosts = null;
+    if (useRealApi) {
+        instagramPosts = await fetchInstagramPosts(country);
+    }
+
+    // Fallback to mock data if API fails or returns empty
+    if (!instagramPosts || instagramPosts.length === 0) {
+        console.log('Using mock Instagram data');
+        instagramPosts = postsData.instagram.filter(post => post.country === country);
+    }
+
+    // Get Reddit posts (using mock data for now)
     const redditPosts = postsData.reddit.filter(post => post.country === country);
 
     // Render Instagram posts
@@ -63,9 +98,16 @@ function displayPosts(country) {
 
     // Render Reddit posts
     redditList.innerHTML = redditPosts.map(post => createRedditCard(post)).join('');
+}
 
-    // Smooth scroll to posts
-    postsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// Create loading state HTML
+function createLoadingState() {
+    return `
+        <div class="col-span-full flex flex-col items-center justify-center py-12">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-gray-500">Fetching latest Instagram posts...</p>
+        </div>
+    `;
 }
 
 // Hide posts and show empty state
@@ -79,22 +121,26 @@ function hidePosts() {
 
 // Create Instagram card HTML
 function createInstagramCard(post) {
+    const caption = escapeHtml(post.caption || 'Travel moment');
+    const username = escapeHtml(post.username || 'traveler');
+
     return `
         <div class="instagram-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
-            <div class="aspect-square overflow-hidden">
+            <div class="aspect-square overflow-hidden bg-gray-100">
                 <img
                     src="${post.image}"
-                    alt="${post.caption}"
+                    alt="${caption}"
                     class="w-full h-full object-cover"
                     loading="lazy"
+                    onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=400&fit=crop'"
                 >
             </div>
             <div class="p-4">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full"></div>
-                    <span class="font-medium text-gray-900">@${post.username}</span>
+                    <span class="font-medium text-gray-900">@${username}</span>
                 </div>
-                <p class="text-gray-700 text-sm mb-3 line-clamp-2">${post.caption}</p>
+                <p class="text-gray-700 text-sm mb-3 line-clamp-2">${caption}</p>
                 <div class="flex items-center justify-between text-gray-500 text-sm">
                     <div class="flex items-center gap-1">
                         <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
@@ -128,7 +174,7 @@ function createRedditCard(post) {
                         ${post.subreddit}
                     </span>
                     <h3 class="text-lg font-semibold text-gray-900 mt-2 mb-2 hover:text-indigo-600 transition">
-                        ${post.title}
+                        ${escapeHtml(post.title)}
                     </h3>
                     <div class="flex items-center gap-4 text-sm text-gray-500">
                         <span>${post.author}</span>
@@ -154,6 +200,13 @@ function formatNumber(num) {
         return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
     }
     return num.toString();
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Handle email form submission
