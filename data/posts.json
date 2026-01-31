@@ -1,0 +1,348 @@
+{
+  "instagram": [
+    {
+      "id": 1,
+      "country": "Japan",
+      "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=400&fit=crop",
+      "caption": "Lost in the streets of Kyoto. The bamboo forest is absolutely magical at sunrise.",
+      "username": "wanderlust_jen",
+      "likes": 2847,
+      "date": "2 days ago"
+    },
+    {
+      "id": 2,
+      "country": "Japan",
+      "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=400&h=400&fit=crop",
+      "caption": "Tokyo nights hit different. Shibuya crossing at midnight.",
+      "username": "travel_mike",
+      "likes": 4521,
+      "date": "5 days ago"
+    },
+    {
+      "id": 3,
+      "country": "Japan",
+      "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&h=400&fit=crop",
+      "caption": "Cherry blossoms in full bloom. Japan in spring is unreal.",
+      "username": "sakura_dreams",
+      "likes": 8934,
+      "date": "1 week ago"
+    },
+    {
+      "id": 4,
+      "country": "Italy",
+      "image": "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&h=400&fit=crop",
+      "caption": "Venice canals at golden hour. No filter needed.",
+      "username": "italian_adventures",
+      "likes": 5623,
+      "date": "3 days ago"
+    },
+    {
+      "id": 5,
+      "country": "Italy",
+      "image": "https://images.unsplash.com/photo-1515859005217-8a1f08870f59?w=400&h=400&fit=crop",
+      "caption": "Amalfi Coast views. This drive is bucket list worthy.",
+      "username": "coastline_chase",
+      "likes": 7291,
+      "date": "1 week ago"
+    },
+    {
+      "id": 6,
+      "country": "Italy",
+      "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=400&fit=crop",
+      "caption": "Roman Colosseum at sunset. History never looked so good.",
+      "username": "history_hunter",
+      "likes": 3847,
+      "date": "4 days ago"
+    },
+    {
+      "id": 7,
+      "country": "Thailand",
+      "image": "https://images.unsplash.com/photo-1528181304800-259b08848526?w=400&h=400&fit=crop",
+      "caption": "Phi Phi Islands are paradise on earth. Crystal clear waters!",
+      "username": "island_hopper",
+      "likes": 6234,
+      "date": "2 days ago"
+    },
+    {
+      "id": 8,
+      "country": "Thailand",
+      "image": "https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=400&h=400&fit=crop",
+      "caption": "Bangkok street food tour. My taste buds are in heaven.",
+      "username": "foodie_travels",
+      "likes": 2156,
+      "date": "6 days ago"
+    },
+    {
+      "id": 9,
+      "country": "Thailand",
+      "image": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&h=400&fit=crop",
+      "caption": "Temple hopping in Chiang Mai. The golden details are incredible.",
+      "username": "zen_traveler",
+      "likes": 4892,
+      "date": "1 week ago"
+    },
+    {
+      "id": 10,
+      "country": "France",
+      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=400&fit=crop",
+      "caption": "Paris is always a good idea. Eiffel Tower at dusk.",
+      "username": "paris_lover",
+      "likes": 9847,
+      "date": "1 day ago"
+    },
+    {
+      "id": 11,
+      "country": "France",
+      "image": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400&h=400&fit=crop",
+      "caption": "Provence lavender fields in full bloom. The smell is intoxicating.",
+      "username": "lavender_dreams",
+      "likes": 5634,
+      "date": "5 days ago"
+    },
+    {
+      "id": 12,
+      "country": "France",
+      "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&h=400&fit=crop",
+      "caption": "French Riviera vibes. Nice is living up to its name.",
+      "username": "riviera_ray",
+      "likes": 3421,
+      "date": "3 days ago"
+    },
+    {
+      "id": 13,
+      "country": "Mexico",
+      "image": "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400&h=400&fit=crop",
+      "caption": "Tulum ruins with the Caribbean backdrop. Ancient meets paradise.",
+      "username": "mayan_explorer",
+      "likes": 4567,
+      "date": "4 days ago"
+    },
+    {
+      "id": 14,
+      "country": "Mexico",
+      "image": "https://images.unsplash.com/photo-1570737209810-87a8e7245f90?w=400&h=400&fit=crop",
+      "caption": "Cenote swimming is a must-do! Natural sinkholes are magical.",
+      "username": "cenote_diver",
+      "likes": 6789,
+      "date": "2 days ago"
+    },
+    {
+      "id": 15,
+      "country": "Mexico",
+      "image": "https://images.unsplash.com/photo-1547558840-8ad6c8f3a8e8?w=400&h=400&fit=crop",
+      "caption": "Mexico City street art is next level. Colors everywhere!",
+      "username": "art_wanderer",
+      "likes": 2345,
+      "date": "1 week ago"
+    },
+    {
+      "id": 16,
+      "country": "Australia",
+      "image": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=400&h=400&fit=crop",
+      "caption": "Sydney Opera House at sunrise. Iconic views!",
+      "username": "aussie_adventures",
+      "likes": 5678,
+      "date": "3 days ago"
+    },
+    {
+      "id": 17,
+      "country": "Australia",
+      "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=400&h=400&fit=crop",
+      "caption": "Great Barrier Reef snorkeling. The colors are unbelievable!",
+      "username": "reef_explorer",
+      "likes": 8923,
+      "date": "5 days ago"
+    },
+    {
+      "id": 18,
+      "country": "Australia",
+      "image": "https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&h=400&fit=crop",
+      "caption": "Uluru at sunset. The rock glows red. Spiritual experience.",
+      "username": "outback_soul",
+      "likes": 4321,
+      "date": "1 week ago"
+    }
+  ],
+  "reddit": [
+    {
+      "id": 1,
+      "country": "Japan",
+      "subreddit": "r/JapanTravel",
+      "title": "2 weeks in Japan - My detailed itinerary that saved me $500",
+      "upvotes": 2847,
+      "comments": 234,
+      "author": "u/budget_traveler_92",
+      "date": "12 hours ago"
+    },
+    {
+      "id": 2,
+      "country": "Japan",
+      "subreddit": "r/JapanTravel",
+      "title": "JR Pass worth it in 2026? Here's my honest breakdown",
+      "upvotes": 1523,
+      "comments": 189,
+      "author": "u/train_enthusiast",
+      "date": "1 day ago"
+    },
+    {
+      "id": 3,
+      "country": "Japan",
+      "subreddit": "r/solotravel",
+      "title": "Solo female traveler in Japan - felt safer than anywhere else",
+      "upvotes": 4521,
+      "comments": 312,
+      "author": "u/solo_sarah",
+      "date": "2 days ago"
+    },
+    {
+      "id": 4,
+      "country": "Italy",
+      "subreddit": "r/ItalyTravel",
+      "title": "Skip the tourist traps: Local Italian gems that changed my trip",
+      "upvotes": 3892,
+      "comments": 276,
+      "author": "u/authentic_adventures",
+      "date": "8 hours ago"
+    },
+    {
+      "id": 5,
+      "country": "Italy",
+      "subreddit": "r/travel",
+      "title": "Amalfi Coast on a budget - it IS possible! Here's how",
+      "upvotes": 2156,
+      "comments": 198,
+      "author": "u/budget_bella",
+      "date": "1 day ago"
+    },
+    {
+      "id": 6,
+      "country": "Italy",
+      "subreddit": "r/ItalyTravel",
+      "title": "Rome vs Florence vs Venice - Which to visit with only 5 days?",
+      "upvotes": 1834,
+      "comments": 423,
+      "author": "u/first_timer_italy",
+      "date": "3 days ago"
+    },
+    {
+      "id": 7,
+      "country": "Thailand",
+      "subreddit": "r/ThailandTourism",
+      "title": "Island hopping guide: Phuket to Koh Samui in 10 days",
+      "upvotes": 2934,
+      "comments": 187,
+      "author": "u/island_fever",
+      "date": "6 hours ago"
+    },
+    {
+      "id": 8,
+      "country": "Thailand",
+      "subreddit": "r/solotravel",
+      "title": "Thailand changed my life. Here's my 30-day transformation journey",
+      "upvotes": 5623,
+      "comments": 456,
+      "author": "u/soul_searcher_23",
+      "date": "2 days ago"
+    },
+    {
+      "id": 9,
+      "country": "Thailand",
+      "subreddit": "r/ThailandTourism",
+      "title": "Best street food in Bangkok - map included!",
+      "upvotes": 1876,
+      "comments": 234,
+      "author": "u/foodie_adventures",
+      "date": "4 days ago"
+    },
+    {
+      "id": 10,
+      "country": "France",
+      "subreddit": "r/paris",
+      "title": "Living like a local in Paris: My 1-month apartment rental experience",
+      "upvotes": 3421,
+      "comments": 298,
+      "author": "u/parisian_dreams",
+      "date": "10 hours ago"
+    },
+    {
+      "id": 11,
+      "country": "France",
+      "subreddit": "r/travel",
+      "title": "Beyond Paris: French countryside road trip that blew my mind",
+      "upvotes": 4567,
+      "comments": 345,
+      "author": "u/road_tripper_eu",
+      "date": "1 day ago"
+    },
+    {
+      "id": 12,
+      "country": "France",
+      "subreddit": "r/FranceTravel",
+      "title": "Wine regions guide: Bordeaux vs Burgundy for first-timers",
+      "upvotes": 1923,
+      "comments": 167,
+      "author": "u/wine_wanderer",
+      "date": "3 days ago"
+    },
+    {
+      "id": 13,
+      "country": "Mexico",
+      "subreddit": "r/MexicoTravel",
+      "title": "Yucatan Peninsula 2-week itinerary: Ruins, cenotes, and beaches",
+      "upvotes": 2789,
+      "comments": 234,
+      "author": "u/mayan_fan",
+      "date": "5 hours ago"
+    },
+    {
+      "id": 14,
+      "country": "Mexico",
+      "subreddit": "r/travel",
+      "title": "Mexico City is the most underrated city for tourists. Fight me.",
+      "upvotes": 6234,
+      "comments": 567,
+      "author": "u/cdmx_lover",
+      "date": "1 day ago"
+    },
+    {
+      "id": 15,
+      "country": "Mexico",
+      "subreddit": "r/solotravel",
+      "title": "Safety tips for solo travelers in Mexico - from someone who's been 5 times",
+      "upvotes": 3456,
+      "comments": 289,
+      "author": "u/mexico_veteran",
+      "date": "2 days ago"
+    },
+    {
+      "id": 16,
+      "country": "Australia",
+      "subreddit": "r/AustraliaTravel",
+      "title": "East Coast road trip: Sydney to Cairns in 3 weeks",
+      "upvotes": 2567,
+      "comments": 198,
+      "author": "u/aussie_roadie",
+      "date": "7 hours ago"
+    },
+    {
+      "id": 17,
+      "country": "Australia",
+      "subreddit": "r/travel",
+      "title": "Great Barrier Reef is dying - visit now before it's too late",
+      "upvotes": 8923,
+      "comments": 678,
+      "author": "u/eco_traveler",
+      "date": "1 day ago"
+    },
+    {
+      "id": 18,
+      "country": "Australia",
+      "subreddit": "r/AustraliaTravel",
+      "title": "Outback survival guide: Everything you need for the red center",
+      "upvotes": 1876,
+      "comments": 145,
+      "author": "u/outback_explorer",
+      "date": "4 days ago"
+    }
+  ]
+}
