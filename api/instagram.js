@@ -1,60 +1,45 @@
-// Vercel Serverless Function - Instagram API via RapidAPI
+// Vercel Serverless Function - Instagram API via Apify (pre-scraped tasks)
 
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
 
-  const { country } = req.query;
+  const country = 'Japan';
 
-  if (!country) {
-    return res.status(400).json({ error: 'Country parameter is required' });
+  const taskId = process.env.APIFY_TASK_JAPAN;
+
+  if (!taskId) {
+    return res.status(500).json({ error: 'APIFY_TASK_JAPAN env var not configured' });
   }
 
-  // Map countries to popular travel hashtags
-  const countryHashtags = {
-    'Japan': 'japantravel',
-    'Italy': 'italytravel',
-    'Thailand': 'thailandtravel',
-    'France': 'francetravel',
-    'Mexico': 'mexicotravel',
-    'Australia': 'australiatravel'
-  };
+  const token = process.env.APIFY_TOKEN;
 
-  const hashtag = countryHashtags[country];
-
-  if (!hashtag) {
-    return res.status(400).json({ error: 'Invalid country' });
-  }
-
-  const apiKey = process.env.RAPIDAPI_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
+  if (!token) {
+    return res.status(500).json({ error: 'API token not configured' });
   }
 
   try {
-    // Using RapidAPI Instagram Scraper API
+    // Fetch dataset items from the last successful run of the pre-configured task
     const response = await fetch(
-      `https://instagram-scraper-api2.p.rapidapi.com/v1/hashtag?hashtag=${hashtag}`,
+      `https://api.apify.com/v2/actor-tasks/${taskId}/runs/last/dataset/items?status=SUCCEEDED`,
       {
-        method: 'GET',
         headers: {
-          'x-rapidapi-key': apiKey,
-          'x-rapidapi-host': 'instagram-scraper-api2.p.rapidapi.com'
+          'Authorization': `Bearer ${token}`
         }
       }
     );
 
-    const data = await response.json();
-
     if (!response.ok) {
-      console.error('API Error Response:', JSON.stringify(data));
+      const errorText = await response.text();
+      console.error('Apify API Error:', response.status, errorText);
       return res.status(response.status).json({
         error: 'Instagram API error',
-        details: data.message || data.error || `Status: ${response.status}`
+        details: `Apify returned status ${response.status}`
       });
     }
+
+    const data = await response.json();
 
     // Transform the data to our format
     const posts = transformInstagramData(data, country);
@@ -62,8 +47,7 @@ export default async function handler(req, res) {
     if (posts.length === 0) {
       return res.status(200).json({
         posts: [],
-        debug: 'No posts found in API response',
-        rawKeys: Object.keys(data || {})
+        debug: 'No posts found in API response'
       });
     }
 
@@ -79,52 +63,26 @@ export default async function handler(req, res) {
 
 function transformInstagramData(data, country) {
   try {
-    // Handle the instagram-scraper-api2 response structure
-    const items = data.data?.items ||
-                  data.items ||
-                  data.data?.edges?.map(e => e.node) ||
-                  data.edge_hashtag_to_media?.edges?.map(e => e.node) ||
-                  [];
+    // Apify returns an array of post objects directly
+    const items = Array.isArray(data) ? data : [];
 
     return items.slice(0, 9).map((item, index) => {
-      // Handle different data structures from the API
-      const node = item.node || item;
-
-      // Get image URL from various possible locations
-      const image = node.display_url ||
-                    node.thumbnail_url ||
-                    node.image_versions2?.candidates?.[0]?.url ||
-                    node.thumbnail_src ||
-                    node.display_resources?.[0]?.src ||
-                    '';
-
-      // Get caption from various possible locations
-      const caption = node.edge_media_to_caption?.edges?.[0]?.node?.text ||
-                      node.caption?.text ||
-                      node.caption ||
-                      'Travel moment';
-
-      // Get username
-      const username = node.owner?.username ||
-                       node.user?.username ||
-                       'traveler';
-
-      // Get likes
-      const likes = node.edge_liked_by?.count ||
-                    node.like_count ||
-                    node.likes?.count ||
-                    Math.floor(Math.random() * 5000) + 500;
+      const image = item.displayUrl || '';
+      const caption = item.caption || 'Travel moment';
+      const username = item.ownerUsername || 'traveler';
+      const likes = item.likesCount || 0;
+      const timestamp = item.timestamp ? new Date(item.timestamp).getTime() / 1000 : null;
 
       return {
-        id: node.id || node.pk || index,
+        id: item.id || item.shortCode || index,
         country: country,
         image: image,
         caption: typeof caption === 'string' ? caption.slice(0, 200) : 'Travel moment',
         username: username,
         likes: likes,
-        date: getRelativeTime(node.taken_at_timestamp || node.taken_at)
+        date: getRelativeTime(timestamp)
       };
-    }).filter(post => post.image); // Only return posts with images
+    }).filter(post => post.image);
   } catch (error) {
     console.error('Error transforming data:', error);
     return [];
@@ -135,7 +93,7 @@ function getRelativeTime(timestamp) {
   if (!timestamp) return 'recently';
 
   const now = Date.now();
-  const time = timestamp * 1000; // Convert to milliseconds if needed
+  const time = timestamp * 1000;
   const diff = now - time;
 
   const minutes = Math.floor(diff / 60000);
